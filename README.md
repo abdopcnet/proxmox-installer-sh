@@ -16,6 +16,7 @@ bash ./proxmox-installer.sh
 - [Script Options](#script-options)
 - [What does the installer do?](#what-does-the-installer-do)
 - [Network Configuration Samples](#network-configuration-samples)
+- [Changelog](#changelog)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
 
@@ -111,6 +112,18 @@ bash ./proxmox-installer.sh --network-sample-routed
 ```sh
 bash ./proxmox-installer.sh --network-sample-masquerade
 ```
+
+### Changelog
+
+#### Version 1.0
+
+- Initial release of Proxmox VE installer script for Debian 12 (Bookworm)
+- Implements:
+  - Hostname check for loopback IP to avoid conflicts.
+  - Proxmox repository setup and GPG key verification.
+  - OS update and Proxmox VE kernel installation.
+  - Post-reboot continuation to install remaining Proxmox packages and remove Debian kernel.
+  - Network configuration samples for default, routed, and masqueraded setups.
 
 ### Troubleshooting
 
