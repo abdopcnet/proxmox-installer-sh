@@ -21,7 +21,7 @@ bash ./proxmox-installer.sh
 - [License](#license)
 
 
-### Installation Prerequisites
+## Installation Prerequisites
 
 Ensure the system meets the following:
 
@@ -31,7 +31,7 @@ Ensure the system meets the following:
 **Note**: This script will modify kernel packages, remove the Debian default kernel, and perform a full system upgrade.
 
 
-### Quick Start
+## Quick Start
 
 1. Clone the repository:
 
@@ -54,7 +54,7 @@ Ensure the system meets the following:
    ```
 
 
-### Script Options
+## Script Options
 
 To see more options run with `--help` flag.
 
@@ -70,9 +70,9 @@ Where OPTIONS:
   --version                   Print installer version
 ```
 
-### What does the installer do?
+## What does the installer do?
 
-#### Step 1
+### Step 1
 
 The script performs the following actions:
 
@@ -82,7 +82,7 @@ The script performs the following actions:
 1. OS Update and Kernel Installation: Installs Proxmox VE kernel packages.
 
 
-#### Step 2
+### Step 2
 
 Upon reboot, re-run the installer to complete the following:
 
@@ -91,31 +91,31 @@ Upon reboot, re-run the installer to complete the following:
 
 Upon completion, access Proxmox VE via `https://<YOUR_SERVER_IP>:8006/`.
 
-### Network Configuration Samples
+## Network Configuration Samples
 
 The script includes samples for network configurations typically used in Proxmox environments. To view a sample, pass the relevant option:
 
-#### Default Bridge
+### Default Bridge
 
 ```sh
 bash ./proxmox-installer.sh --network-sample-default
 ```
 
-#### Routed Network
+### Routed Network
 
 ```sh
 bash ./proxmox-installer.sh --network-sample-routed
 ```
 
-#### Masquerade (NAT)
+### Masquerade (NAT)
 
 ```sh
 bash ./proxmox-installer.sh --network-sample-masquerade
 ```
 
-### Changelog
+## Changelog
 
-#### Version 1.0
+### Version 1.0
 
 - Initial release of Proxmox VE installer script for Debian 12 (Bookworm)
 - Implements:
@@ -125,7 +125,7 @@ bash ./proxmox-installer.sh --network-sample-masquerade
   - Post-reboot continuation to install remaining Proxmox packages and remove Debian kernel.
   - Network configuration samples for default, routed, and masqueraded setups.
 
-### Troubleshooting
+## Troubleshooting
 
 If the installation fails, verify the following:
 
@@ -135,6 +135,6 @@ If the installation fails, verify the following:
 
 To re-run the installer from scratch, delete the `/opt/proxmox-installer-sh` directory to reset the installation flags.
 
-### License
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for more information.
