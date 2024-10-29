@@ -128,6 +128,32 @@ is_os_supported() {
   return 1
 }
 
+write_hostsname_to_hosts_file() {
+  local HOSTNAME="$1"
+
+  # Process IPv4 addresses
+  ip addr | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '^127\.' | while read -r ipv4; do
+      # Check if the IP and hostname combination exists in /etc/hosts
+      if ! grep -q "^$ipv4.*$HOSTNAME" /etc/hosts; then
+          printf "$ipv4 $HOSTNAME\n" | sudo tee -a /etc/hosts
+          printlog "Added IPv4: $ipv4 $HOSTNAME\n"
+      else
+          printlog "IPv4 already exists: $ipv4 $HOSTNAME\n"
+      fi
+  done
+
+  # Process IPv6 addresses
+  ip addr | grep -oP '(?<=inet6\s)[\da-f:]+' | grep -v '^::1' | while read -r ipv6; do
+      # Check if the IP and hostname combination exists in /etc/hosts
+      if ! grep -q "^$ipv6.*$HOSTNAME" /etc/hosts; then
+          printf "$ipv6 $HOSTNAME\n" | sudo tee -a /etc/hosts
+          printlog "Added IPv6: $ipv6 $HOSTNAME\n"
+      else
+          printlog "IPv6 already exists: $ipv6 $HOSTNAME\n"
+      fi
+  done
+}
+
 add_proxmox_repo() {
   printlog "Adding deb [arch=amd64] http://download.proxmox.com/debian/pve bookworm pve-no-subscription to /etc/apt/sources.list.d/pve-install-repo.list\n"
   echo "deb [arch=amd64] http://download.proxmox.com/debian/pve bookworm pve-no-subscription" > /etc/apt/sources.list.d/pve-install-repo.list
@@ -155,12 +181,24 @@ install_proxmox_kernel() {
 }
 
 install_proxmox_ve() {
+  # Prevent post-installation bug of ifupdown2 with message
+  # "Another instance of this program is already running"
+  mkdir -p /run/network
+
+  set_postfix_config
+  DEBIAN_FRONTEND=noninteractive \
   apt install -y proxmox-ve postfix open-iscsi chrony
+}
+
+set_postfix_config() {
+  printf "postfix postfix/main_mailer_type string Local only\n" | debconf-set-selections
+  printf "postfix postfix/mailname string $(hostname -f)\n" | debconf-set-selections
+  printf "postfix postfix/protocols string all\n" | debconf-set-selections
 }
 
 remove_debian_kernel() {
   apt remove -y linux-image-amd64 'linux-image-6.1*'
-  update_grub
+  update-grub
   apt -y remove os-prober
 }
 
@@ -169,6 +207,10 @@ install_step1() {
     dashed_printlog "Error: Hostname must not resolve to loopback address 127.0.0.1.\n"
     exit 1
   }
+
+  local HOSTNAME="$( hostname -f )"
+  dashed_printlog "Add hostname $HOSTNAME to hosts file.\n"
+  write_hostsname_to_hosts_file "$HOSTNAME"
 
   dashed_printlog "Add Proxmox VE repository.\n"
   add_proxmox_repo
