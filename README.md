@@ -33,11 +33,17 @@ Ensure the system meets the following:
 
 ## Quick Start
 
-1. Clone the repository:
+1. Clone the repository or download the installer file:
 
     ```sh
     git clone https://github.com/rioastamal/proxmox-installer-sh.git
     cd proxmox-installer-sh
+    ```
+
+    or
+
+    ```
+    curl -L -s -O https://github.com/rioastamal/proxmox-installer-sh/raw/refs/heads/main/proxmox-installer.sh
     ```
 
 2. Run the installer script:
