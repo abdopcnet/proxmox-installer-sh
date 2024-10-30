@@ -12,6 +12,7 @@ bash ./proxmox-installer.sh
 ### Table of Contents
 
 - [Installation Prerequisites](#installation-prerequisites)
+- [Tested Environment](#tested-environment)
 - [Quick Start](#quick-start)
 - [Script Options](#script-options)
 - [What does the installer do?](#what-does-the-installer-do)
@@ -30,6 +31,15 @@ Ensure the system meets the following:
 
 **Note**: This script will modify kernel packages, remove the Debian default kernel, and perform a full system upgrade.
 
+## Tested Environment
+
+This installer script has been tested in the following environment:
+
+- Bare metal server (Intel Xeon E-2276G with 64 GB of RAM)
+- Amazon EC2 metal instance (c7i.metal-24xl)
+- Amazon EC2 standard instance (t3.large)
+
+**Note:** Keep in mind that Amazon EC2 metal instances take a long time to reboot, approximately 15-20 minutes.
 
 ## Quick Start
 
