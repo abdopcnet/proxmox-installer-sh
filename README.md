@@ -131,7 +131,7 @@ bash ./proxmox-installer.sh --network-sample-masquerade
 
 ## Changelog
 
-### Version 1.0
+### Version 1.0 (2024-10-31)
 
 - Initial release of Proxmox VE installer script for Debian 12 (Bookworm)
 - Implements:
