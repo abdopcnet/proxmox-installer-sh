@@ -2,7 +2,7 @@
 
 This script simplifies the process of installing Proxmox VE on a fresh Debian 12 (Bookworm) installation. It follows the official Proxmox installation guide, adding functions for pre-install checks, Proxmox repository setup, GPG verification, OS update, and kernel installations.
 
-To begin the installation run following command.
+To begin the installation run following command as root.
 
 ```sh
 bash ./proxmox-installer.sh
