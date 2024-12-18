@@ -4,7 +4,7 @@
 # install Proxmox on top of Debian 12 Bookworm.
 # https://pve.proxmox.com/wiki/Install_Proxmox_VE_on_Debian_12_Bookworm
 
-INSTALLER_VERSION="1.0"
+INSTALLER_VERSION="1.0.1"
 
 # Define ANSI escape codes
 BOLD="\033[1m"
