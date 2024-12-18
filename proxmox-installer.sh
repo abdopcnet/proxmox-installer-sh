@@ -35,11 +35,27 @@ dashed_printlog() {
   repeat_chars '-'
 }
 
+get_install_proxmox_kernel_cmd() {
+  [ ! -f "$HOME/proxmox_kernel_command.sh" ] && printf "apt install -y proxmox-default-kernel" && return 0
+  cat "$HOME/proxmox_kernel_command.sh"
+}
+
+get_install_proxmox_ve_cmd() {
+  [ ! -f "$HOME/proxmox_ve_command.sh" ] && printf "apt install -y proxmox-ve postfix open-iscsi chrony" && return 0
+  cat "$HOME/proxmox_ve_command.sh"
+}
+
 warning_message() {
   dashed_printlog "Proxmox VE installer script\n"
   printf "It is recommended to run the installer on fresh Debian 12 installation.
 
-Press any key to continue or CTRL+C to abort.\n"
+Press any key to continue or CTRL+C to abort.
+
+Custom Proxmox kernel installation:
+$( get_install_proxmox_kernel_cmd )
+
+Custom Proxmox VE installation:
+$( get_install_proxmox_ve_cmd )\n"
 
   local _ANY_KEY
   read _ANY_KEY
@@ -177,7 +193,8 @@ update_os() {
 }
 
 install_proxmox_kernel() {
-  apt install -y proxmox-default-kernel
+  printlog "Running command: $( get_install_proxmox_kernel_cmd )\n"
+  eval "$( get_install_proxmox_kernel_cmd )"
 }
 
 install_proxmox_ve() {
@@ -186,8 +203,11 @@ install_proxmox_ve() {
   mkdir -p /run/network
 
   set_postfix_config
-  DEBIAN_FRONTEND=noninteractive \
-  apt install -y proxmox-ve postfix open-iscsi chrony
+  printlog "Running command: $( get_install_proxmox_ve_cmd )\n"
+  eval "$( get_install_proxmox_ve_cmd )"
+  
+  [ ! -f "$HOME/proxmox_ve_command.sh" && \
+    DEBIAN_FRONTEND=noninteractive apt install -y postfix open-iscsi chrony
 }
 
 set_postfix_config() {
